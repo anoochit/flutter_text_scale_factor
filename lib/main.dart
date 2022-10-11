@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
       // add text scaling factor
       builder: (context, child) {
         final mediaQueryData = MediaQuery.of(context);
-        final scale = mediaQueryData.textScaleFactor.clamp(0.8, 0.9);
+        final scale = mediaQueryData.textScaleFactor.clamp(0.89, 0.99);
         return MediaQuery(data: MediaQuery.of(context).copyWith(textScaleFactor: scale), child: child!);
       },
     );
@@ -64,64 +64,66 @@ class HomePage extends StatelessWidget {
           ],
         ),
       ),
-      body: GridView.builder(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 1 / 1.4,
+      body: SingleChildScrollView(
+        child: Wrap(
+          children: List.generate(20, (index) => ProductItem()),
         ),
-        shrinkWrap: true,
-        itemCount: 20,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.all(14.0),
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16.0),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.shade400,
-                    blurRadius: 12.0,
-                  ),
-                ],
-              ),
-              clipBehavior: Clip.antiAliasWithSaveLayer,
-              child: LayoutBuilder(builder: (context, constraints) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      height: constraints.maxWidth,
-                      width: constraints.maxWidth,
-                      decoration: const BoxDecoration(
-                          image: DecorationImage(
-                              image: NetworkImage(
-                        "https://picsum.photos/id/237/200/200",
-                      ))),
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text(
-                        "Ex occaecat aute voluptate",
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text(
-                        "120.00",
-                        style: TextStyle(fontSize: 16),
-                      ),
-                    ),
-                  ],
-                );
-              }),
-            ),
-          );
-        },
       ),
     );
+  }
+}
+
+class ProductItem extends StatelessWidget {
+  const ProductItem({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(builder: (context, constraints) {
+      return SizedBox(
+        width: constraints.maxWidth * 0.5,
+        height: constraints.maxWidth * 0.74,
+        child: Padding(
+          padding: const EdgeInsets.all(14.0),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(16.0),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.shade400,
+                  blurRadius: 16.0,
+                ),
+              ],
+            ),
+            clipBehavior: Clip.antiAliasWithSaveLayer,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Image.network("https://picsum.photos/id/237/200/200"),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                  child: Text(
+                    "Ex occaecat aute voluptate",
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                  child: Text(
+                    "120.00",
+                    style: TextStyle(fontSize: 16),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    });
   }
 }
